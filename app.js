@@ -1,33 +1,18 @@
 // Importing necessary modules
 const express = require("express");
-const TelegramBot = require("node-telegram-bot-api");
 const bodyParser = require("body-parser");
 require("dotenv").config();
-
-// Replace 'YOUR_BOT_TOKEN' with the token you get from BotFather
-const BOT_TOKEN = process.env.BOT_TOKEN;
-// Replace 'YOUR_GROUP_CHAT_ID' with the ID of your group chat
-const CHAT_ID = process.env.CHAT_ID;
-
-// Create a bot instance
-const bot = new TelegramBot(BOT_TOKEN, { polling: true });
+const { setChatID } = require("./envSetup");
+const { bot } = require("./botSetup");
 
 messages = [];
-
-bot.on("new_chat_members", (msg) => {
-  console.log(msg.chat.id);
-});
-
-bot.on("chat_member", (memberStatus) => {
-  console.log(memberStatus);
-});
 
 bot.on("message", (msg) => {
   if (msg.text) {
     const chatId = msg.chat.id;
-    // console.log(chatId);
-    messages.push(msg.text);
+    setChatID(chatId); // Set CHAT_ID to the chat ID of the received message
 
+    messages.push(msg.text);
     console.log(
       "Message received from Telegram--->",
       messages[messages.length - 1]
@@ -57,6 +42,8 @@ app.get("/api/messages", (req, res) => {
 app.post("/api/messages", (req, res) => {
   const msg = req.body.message;
   messages.push(msg);
+
+  const CHAT_ID = process.env.CHAT_ID;
 
   bot
     .sendMessage(CHAT_ID, msg)
