@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Telegram Bot Chat</title>
+    <style>
+      #chatbox {
+        width: 400px;
+        height: 300px;
+        overflow-y: scroll;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Telegram Bot Chat</h1>
+    <div id="chatbox"></div>
+    <textarea id="messageInput" rows="4" cols="50"></textarea><br />
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+      function fetchMessages() {
+        fetch("/api/messages")
+          .then((response) => response.json())
+          .then((messages) => {
+            const chatbox = document.getElementById("chatbox");
+            chatbox.innerHTML = messages
+              .map((message) => `<div>${message}</div>`)
+              .join("");
+            chatbox.scrollTop = chatbox.scrollHeight;
+          })
+          .catch((error) => console.error("Error fetching messages:", error));
+      }
+
+      function sendMessage() {
+        const messageInput = document.getElementById("messageInput");
+        const message = messageInput.value.trim();
+        if (message) {
+          fetch("/api/messages-sent", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message }),
+          })
+            .then(() => {
+              messageInput.value = ""; // Clear the input field after sending
+              fetchMessages(); // Refresh the chatbox
+            })
+            .catch((error) => console.error("Error sending message:", error));
+        }
+      }
+
+      // Fetch messages initially
+      fetchMessages();
+
+      // Fetch messages every half second
+      setInterval(fetchMessages, 500);
+    </script>
+  </body>
+</html>

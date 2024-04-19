@@ -18,9 +18,9 @@ console.log("Bot is running...");
 // Creating an instance of Express
 const app = express();
 
-// Define a route
+// Express route to serve HTML file
 app.get("/", (req, res) => {
-  res.send("Hello, world!");
+  res.sendFile(__dirname + "/index.html");
 });
 
 // Start the server
