@@ -39,7 +39,7 @@
         const messageInput = document.getElementById("messageInput");
         const message = messageInput.value.trim();
         if (message) {
-          fetch("/api/messages-sent", {
+          fetch("/api/messages", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -47,6 +47,7 @@
             body: JSON.stringify({ message }),
           })
             .then(() => {
+              console.log("shold be clearing here");
               messageInput.value = ""; // Clear the input field after sending
               fetchMessages(); // Refresh the chatbox
             })
@@ -59,6 +60,15 @@
 
       // Fetch messages every half second
       setInterval(fetchMessages, 500);
+
+      // Add event listener for Enter key press
+      document
+        .getElementById("messageInput")
+        .addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+            sendMessage();
+          }
+        });
     </script>
   </body>
 </html>
