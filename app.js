@@ -2,25 +2,30 @@
 const express = require("express");
 const TelegramBot = require("node-telegram-bot-api");
 const bodyParser = require("body-parser");
+require("dotenv").config();
 
 // Replace 'YOUR_BOT_TOKEN' with the token you get from BotFather
-const token = "6603956134:AAERpbZH_vmJguvj5pxUZc_QuGcDsWnFLW4";
+const BOT_TOKEN = process.env.BOT_TOKEN;
 // Replace 'YOUR_GROUP_CHAT_ID' with the ID of your group chat
-const chatId = "-1002123153182";
+const CHAT_ID = process.env.CHAT_ID;
 
 // Create a bot instance
-const bot = new TelegramBot(token, { polling: true });
+const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
 messages = [];
 
 bot.on("new_chat_members", (msg) => {
-  console.log(msg);
+  console.log(msg.chat.id);
+});
+
+bot.on("chat_member", (memberStatus) => {
+  console.log(memberStatus);
 });
 
 bot.on("message", (msg) => {
   if (msg.text) {
     const chatId = msg.chat.id;
-    // console.log(chatId);
+    console.log(chatId);
     messages.push(msg.text);
 
     console.log(
@@ -58,7 +63,7 @@ app.post("/api/messages", (req, res) => {
   messages.push(msg);
 
   bot
-    .sendMessage(chatId, msg)
+    .sendMessage(CHAT_ID, msg)
     .then(() => {
       console.log('"Message Received from Front end-------->"', msg);
       res.sendStatus(200); // Send a success response
