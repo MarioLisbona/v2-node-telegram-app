@@ -25,17 +25,13 @@ bot.on("chat_member", (memberStatus) => {
 bot.on("message", (msg) => {
   if (msg.text) {
     const chatId = msg.chat.id;
-    console.log(chatId);
+    // console.log(chatId);
     messages.push(msg.text);
 
     console.log(
       "Message received from Telegram--->",
       messages[messages.length - 1]
     );
-    // console.log("Message history", msgs);
-
-    // // Echo the received message back to the chat
-    // bot.sendMessage(chatId, `You said: ${msg.text}`);
   }
 });
 
