@@ -1,22 +1,12 @@
 // Importing necessary modules
-const express = require("express");
 const bodyParser = require("body-parser");
 require("dotenv").config();
-const { setChatID } = require("./envSetup");
 const { bot } = require("./botSetup");
 const { app } = require("./init");
+const { handleMessage, sendMessageToBot } = require("./botHandlers");
 
 bot.on("message", (msg) => {
-  if (msg.text) {
-    const chatId = msg.chat.id;
-    setChatID(chatId); // Set CHAT_ID to the chat ID of the received message
-
-    messages.push(msg.text);
-    console.log(
-      "Message received from Telegram--->",
-      messages[messages.length - 1]
-    );
-  }
+  handleMessage(msg, messages);
 });
 
 console.log("Bot is running...");
@@ -36,20 +26,10 @@ app.get("/api/messages", (req, res) => {
 
 // Route to handle messages sent from the client
 app.post("/api/messages", (req, res) => {
+  console.log(req.body);
   const msg = req.body.message;
   messages.push(msg);
-
-  const CHAT_ID = process.env.CHAT_ID;
-
-  bot
-    .sendMessage(CHAT_ID, msg)
-    .then(() => {
-      console.log('"Message Received from Front end-------->"', msg);
-      res.sendStatus(200); // Send a success response
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+  sendMessageToBot(process.env.CHAT_ID, msg, res);
 });
 
 // Start the server
