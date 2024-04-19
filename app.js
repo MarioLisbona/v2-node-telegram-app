@@ -4,8 +4,7 @@ const bodyParser = require("body-parser");
 require("dotenv").config();
 const { setChatID } = require("./envSetup");
 const { bot } = require("./botSetup");
-
-messages = [];
+const { app } = require("./init");
 
 bot.on("message", (msg) => {
   if (msg.text) {
@@ -21,9 +20,6 @@ bot.on("message", (msg) => {
 });
 
 console.log("Bot is running...");
-
-// Creating an instance of Express
-const app = express();
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
