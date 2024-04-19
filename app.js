@@ -13,19 +13,25 @@ const bot = new TelegramBot(token, { polling: true });
 
 messages = [];
 
+bot.on("new_chat_members", (msg) => {
+  console.log(msg);
+});
+
 bot.on("message", (msg) => {
-  const chatId = msg.chat.id;
-  // console.log(chatId);
-  messages.push(msg.text);
+  if (msg.text) {
+    const chatId = msg.chat.id;
+    // console.log(chatId);
+    messages.push(msg.text);
 
-  console.log(
-    "Message received from Telegram--->",
-    messages[messages.length - 1]
-  );
-  // console.log("Message history", msgs);
+    console.log(
+      "Message received from Telegram--->",
+      messages[messages.length - 1]
+    );
+    // console.log("Message history", msgs);
 
-  // // Echo the received message back to the chat
-  // bot.sendMessage(chatId, `You said: ${msg.text}`);
+    // // Echo the received message back to the chat
+    // bot.sendMessage(chatId, `You said: ${msg.text}`);
+  }
 });
 
 console.log("Bot is running...");
