@@ -1,6 +1,7 @@
 // Importing necessary modules
 const express = require("express");
 const TelegramBot = require("node-telegram-bot-api");
+const handleBot = require("./bot");
 
 // Replace 'YOUR_BOT_TOKEN' with the token you get from BotFather
 const token = "6603956134:AAERpbZH_vmJguvj5pxUZc_QuGcDsWnFLW4";
@@ -8,13 +9,9 @@ const token = "6603956134:AAERpbZH_vmJguvj5pxUZc_QuGcDsWnFLW4";
 // Create a bot instance
 const bot = new TelegramBot(token, { polling: true });
 
-// Listen for messages
-bot.on("message", (msg) => {
-  const chatId = msg.chat.id;
+handleBot(bot);
 
-  // Echo the received message back to the chat
-  bot.sendMessage(chatId, `You said: ${msg.text}`);
-});
+msgs = [];
 
 console.log("Bot is running...");
 
