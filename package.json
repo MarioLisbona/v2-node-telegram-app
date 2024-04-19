@@ -1,0 +1,19 @@
+{
+  "name": "v2-node-telegram-app",
+  "version": "1.0.0",
+  "description": "a server to echo telegram messages to a simple front end chat box",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "node-telegram-bot-api": "^0.65.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
