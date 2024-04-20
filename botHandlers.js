@@ -16,7 +16,7 @@ function handleMessage(msg, messages) {
   }
 }
 
-function sendMessageToBot(chatId, msg, res) {
+function sendMessageFromClient(chatId, msg, res) {
   bot
     .sendMessage(chatId, msg)
     .then(() => {
@@ -29,4 +29,4 @@ function sendMessageToBot(chatId, msg, res) {
     });
 }
 
-module.exports = { handleMessage, sendMessageToBot };
+module.exports = { handleMessage, sendMessageFromClient };
