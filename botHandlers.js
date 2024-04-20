@@ -1,6 +1,10 @@
 const { setChatID } = require("./envSetup");
 const { bot } = require("./botSetup");
 
+bot.on("message", (msg) => {
+  handleMessage(msg, messages);
+});
+
 function handleMessage(msg, messages) {
   if (msg.text) {
     const chatId = msg.chat.id;
