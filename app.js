@@ -5,10 +5,6 @@ const { handleMessage } = require("./botHandlers");
 const indexRoutes = require("./routes/index");
 const apiRoutes = require("./routes/api");
 
-// bot.on("message", (msg) => {
-//   handleMessage(msg, messages);
-// });
-
 console.log("Bot is running...");
 
 // Use routes
