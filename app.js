@@ -4,6 +4,7 @@ require("dotenv").config();
 const { bot } = require("./botSetup");
 const { app } = require("./init");
 const { handleMessage, sendMessageToBot } = require("./botHandlers");
+const indexRoutes = require("./routes/index");
 
 bot.on("message", (msg) => {
   handleMessage(msg, messages);
@@ -14,10 +15,13 @@ console.log("Bot is running...");
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
 
-// Express route to serve HTML file
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
-});
+// Use routes
+app.use("/", indexRoutes);
+
+// // Express route to serve HTML file
+// app.get("/", (req, res) => {
+//   res.sendFile(__dirname + "/index.html");
+// });
 
 // route to serve messages array
 app.get("/api/messages", (req, res) => {
