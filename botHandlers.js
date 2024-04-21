@@ -5,6 +5,10 @@ bot.on("message", (msg) => {
   handleMessage(msg, messages);
 });
 
+bot.on("text", (msg) => {
+  console.log(msg);
+});
+
 function handleMessage(msg, messages) {
   if (msg.text) {
     const chatId = msg.chat.id;
