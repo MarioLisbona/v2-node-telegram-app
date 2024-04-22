@@ -1,5 +1,6 @@
 const { setChatID } = require("./envSetup");
 const { bot } = require("./botSetup");
+const { setMessages, getMessages } = require("./init");
 
 bot.on("message", (msg) => {
   handleMessage(msg, messages);
@@ -12,7 +13,8 @@ function handleMessage(msg, messages) {
     // Only happens if no ID or Diff ID is set
     setChatID(chatId);
 
-    messages.push(msg.text);
+    setMessages(msg.text);
+
     console.log(
       "Message received from Telegram--->",
       messages[messages.length - 1]
