@@ -19,17 +19,4 @@ function handleMessage(msg) {
   }
 }
 
-function sendMessageFromClient(chatId, msg, res) {
-  bot
-    .sendMessage(chatId, msg)
-    .then(() => {
-      console.log("Message sent to bot--->", msg);
-      res.sendStatus(200); // Send a success response
-    })
-    .catch((error) => {
-      console.error("Error sending message to bot:", error);
-      res.sendStatus(500); // Send an error response
-    });
-}
-
-module.exports = { handleMessage, sendMessageFromClient };
+module.exports = { handleMessage };
