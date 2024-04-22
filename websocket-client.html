@@ -73,11 +73,13 @@
         console.log(event);
 
         const messages = JSON.parse(event.data);
+        console.log(messages);
         const messagesDiv = document.getElementById("messages");
 
-        messages.forEach((message) => {
-          messagesDiv.innerHTML += message + "<br>";
-        });
+        messagesDiv.innerHTML = messages
+          .map((message) => `<div>${message}</div>`)
+          .join("");
+
         // Scroll to the bottom of the chat box
         messages.scrollTop = messages.scrollHeight;
       });
