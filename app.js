@@ -21,9 +21,13 @@ sockserver.on("connection", (ws) => {
 
     bot.sendMessage(chatId, msg);
 
+    console.log("message array needs to be sent to front end", getMessages());
+    const messages = getMessages();
+    const messagesJSON = JSON.stringify(messages);
+
     sockserver.clients.forEach((client) => {
-      console.log(`distributing message: ${data}`);
-      client.send(`${data}`);
+      console.log("distributing message: ", messages);
+      client.send(messagesJSON);
     });
   });
   ws.onerror = function () {

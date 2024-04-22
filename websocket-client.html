@@ -71,8 +71,13 @@
 
       webSocket.addEventListener("message", (event) => {
         console.log(event);
-        const messages = document.getElementById("messages");
-        messages.innerHTML += "Message from server: " + event.data + "<br>";
+
+        const messages = JSON.parse(event.data);
+        const messagesDiv = document.getElementById("messages");
+
+        messages.forEach((message) => {
+          messagesDiv.innerHTML += "Message from server: " + message + "<br>";
+        });
         // Scroll to the bottom of the chat box
         messages.scrollTop = messages.scrollHeight;
       });
