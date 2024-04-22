@@ -8,10 +8,6 @@ const { setMessages, getMessages } = require("./init");
 const { WebSocketServer } = require("ws");
 const sockserver = new WebSocketServer({ port: 443 });
 
-bot.on("message", (telegramMsg) => {
-  handleMessage(telegramMsg);
-});
-
 sockserver.on("connection", (ws) => {
   console.log("New client connected!");
   ws.on("close", () => console.log("Client has disconnected!"));
