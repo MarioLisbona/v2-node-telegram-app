@@ -2,13 +2,10 @@ const { setChatID } = require("./envSetup");
 const { bot } = require("./botSetup");
 const { setMessages, getMessages } = require("./init");
 
-bot.on("message", (msg) => {
-  handleMessage(msg, messages);
-});
-
-function handleMessage(msg, messages) {
+function handleMessage(msg) {
   if (msg.text) {
     const chatId = msg.chat.id;
+    messages = getMessages();
     // Set CHAT_ID to the chat ID of the received message
     // Only happens if no ID or Diff ID is set
     setChatID(chatId);

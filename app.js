@@ -32,6 +32,19 @@ sockserver.on("connection", (ws) => {
   ws.onerror = function () {
     console.log("websocket error");
   };
+
+  bot.on("message", (msg) => {
+    handleMessage(msg);
+
+    // Get updated messages
+    const messages = getMessages();
+    const messagesJSON = JSON.stringify(messages);
+
+    sockserver.clients.forEach((client) => {
+      console.log("distributing message: ", messages);
+      client.send(messagesJSON);
+    });
+  });
 });
 
 console.log("Bot is running...");
