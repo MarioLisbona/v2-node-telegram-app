@@ -1,6 +1,23 @@
+<!DOCTYPE html>
 <html>
   <head>
     <style>
+      body {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 100vh; /* Take up the full height of the viewport */
+      }
+
+      #container {
+        width: 50%; /* Take up 50% of the viewport width */
+        text-align: center; /* Center text horizontally */
+      }
+
+      h1 {
+        margin-bottom: 20px; /* Add some space below the heading */
+      }
+
       #chat-box {
         border: 1px solid #ccc;
         padding: 10px;
@@ -31,10 +48,11 @@
         border: 1px solid #ccc;
         border-radius: 3px;
         font-size: 16px;
-        flex: 1; /* Take remaining space */
+        width: 100%; /* Take up 100% of the available width */
       }
 
       input[type="submit"] {
+        margin-left: 10px;
         padding: 5px 10px;
         background-color: #4caf50;
         color: white;
@@ -50,17 +68,23 @@
     </style>
   </head>
   <body>
-    <div id="chat-box">
-      <div id="messages"></div>
-    </div>
-
-    <form id="input-form">
-      <div>
-        <label for="message">Enter Message:</label>
-        <input type="text" id="message" name="message" />
+    <div id="container">
+      <h1>Telegram Chat Bot</h1>
+      <!-- New heading added -->
+      <div id="chat-box">
+        <div id="messages"></div>
       </div>
-      <input type="submit" value="Send" />
-    </form>
+
+      <form id="input-form">
+        <input
+          type="text"
+          id="message"
+          name="message"
+          placeholder="Enter Message..."
+        />
+        <input type="submit" value="Send" />
+      </form>
+    </div>
 
     <script>
       const webSocket = new WebSocket("ws://localhost:443/");
