@@ -13,7 +13,7 @@ git clone git@github.com:MarioLisbona/v2-node-telegram-app.git
 1. cd into the directory
 
 ```bash
-cd node-telegram-bot
+cd v2-node-telegram-app
 ```
 
 2. Change the filename `.env.sample` to `.env`
