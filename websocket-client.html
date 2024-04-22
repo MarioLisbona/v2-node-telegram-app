@@ -1,5 +1,5 @@
 <html>
-  <head> </head>
+  <head></head>
   <body>
     <form id="input-form">
       <label for="message">Enter Message:</label>
@@ -9,20 +9,28 @@
     <div id="messages"></div>
     <script>
       const webSocket = new WebSocket("ws://localhost:443/");
-      webSocket.onmessage = (event) => {
-        console.log(event);
-        document.getElementById("messages").innerHTML +=
-          "Message from server: " + event.data + "<br>";
-      };
+
       webSocket.addEventListener("open", () => {
         console.log("We are connected");
       });
+
+      webSocket.addEventListener("message", (event) => {
+        console.log(event);
+        document.getElementById("messages").innerHTML +=
+          "Message from server: " + event.data + "<br>";
+      });
+
       function sendMessage(event) {
+        event.preventDefault(); // Prevent form submission
         var inputMessage = document.getElementById("message");
-        webSocket.send(inputMessage.value);
-        inputMessage.value = "";
-        event.preventDefault();
+        if (webSocket.readyState === WebSocket.OPEN) {
+          webSocket.send(inputMessage.value);
+          inputMessage.value = "";
+        } else {
+          console.error("WebSocket not open.");
+        }
       }
+
       document
         .getElementById("input-form")
         .addEventListener("submit", sendMessage);
