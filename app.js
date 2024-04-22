@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { bot } = require("./botSetup");
 const { app } = require("./init");
-const { handleMessage } = require("./botHandlers");
+const { handleMessage } = require("./lib");
 const indexRoutes = require("./routes/index");
 const { setMessages, getMessages } = require("./init");
 
