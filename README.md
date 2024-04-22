@@ -59,3 +59,8 @@ npm start
 ```
 
 The front end will load at [http://localhost:3000](http://localhost:3000)
+
+### Use the App
+
+- You need to send the first message from the telegram app. This will set the `CHAT_ID` env variable.
+- You can now send messages from numerous front end clients and from the telegram desktop and mobile applications
