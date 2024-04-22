@@ -8,23 +8,30 @@ const { setMessages, getMessages } = require("./init");
 const { WebSocketServer } = require("ws");
 const sockserver = new WebSocketServer({ port: 443 });
 
-// handle and echo messages that are received by the bot in the telegram chat
+// bot handler for sent message in telegram application
 bot.on("message", (telegramMsg) => {
+  // function updates messages array and sets chat ID if not already done
   handleMessage(telegramMsg);
 });
 
+// websocket connection with chat client
 sockserver.on("connection", (ws) => {
   console.log("New client connected!");
   ws.on("close", () => console.log("Client has disconnected!"));
+
+  // msg received from chat client
   ws.on("message", (data) => {
+    // set variables
     msg = data.toString();
     chatId = process.env.CHAT_ID;
 
+    // update message array
     setMessages(msg);
 
+    // echo message to telegram bot
     bot.sendMessage(chatId, msg);
 
-    console.log("message array needs to be sent to front end", getMessages());
+    // stringify messages array and send to all connected clients
     const messages = getMessages();
     const messagesJSON = JSON.stringify(messages);
 
@@ -37,8 +44,9 @@ sockserver.on("connection", (ws) => {
     console.log("websocket error");
   };
 
+  // bot handler for sent message in telegram application
   bot.on("message", () => {
-    // Get updated messages
+    // stringify messages array and send to all connected clients
     const messages = getMessages();
     const messagesJSON = JSON.stringify(messages);
 
