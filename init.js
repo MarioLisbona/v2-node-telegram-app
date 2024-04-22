@@ -8,4 +8,10 @@ app.use(express.json());
 
 messages = [];
 
-module.exports = { app, messages };
+const setMessages = (msg) => {
+  messages.push(msg);
+};
+
+const getMessages = () => messages;
+
+module.exports = { app, messages, setMessages, getMessages };
