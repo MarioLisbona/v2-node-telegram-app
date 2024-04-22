@@ -4,6 +4,7 @@ const { app } = require("./init");
 const { handleMessage } = require("./botHandlers");
 const indexRoutes = require("./routes/index");
 const apiRoutes = require("./routes/api");
+const { setMessages, getMessages } = require("./init");
 
 const { WebSocketServer } = require("ws");
 const sockserver = new WebSocketServer({ port: 443 });
@@ -13,6 +14,13 @@ sockserver.on("connection", (ws) => {
   ws.send("connection established");
   ws.on("close", () => console.log("Client has disconnected!"));
   ws.on("message", (data) => {
+    msg = data.toString();
+    chatId = process.env.CHAT_ID;
+
+    setMessages(msg);
+
+    bot.sendMessage(chatId, msg);
+
     sockserver.clients.forEach((client) => {
       console.log(`distributing message: ${data}`);
       client.send(`${data}`);
