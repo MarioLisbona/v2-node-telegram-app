@@ -7,7 +7,6 @@ const {
   setMessages,
   getMessages,
 } = require("./init");
-const { handleMessage } = require("./lib");
 const indexRoutes = require("./routes/index");
 
 const { WebSocketServer } = require("ws");
@@ -54,7 +53,6 @@ sockserver.on("connection", (ws) => {
 
     msg = data.toString();
     chatId = getChatId();
-    console.log("Message received----", msg, chatId);
 
     // update message array
     setMessages(msg);
