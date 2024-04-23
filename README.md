@@ -34,14 +34,6 @@ cd v2-node-telegram-app
 7. **Bot Creation:** After providing a name and username, BotFather will confirm the details you've entered and provide you with a token for your new bot. This token is necessary for authenticating requests to the Telegram Bot API.
 8. **Save the Token:** Copy the token and use its value for the `.env` key-pair `BOT_TOKEN`
 
-### Create a new Telegram chat and add the Bot
-
-1. Create a new telegram chat and add the bot username
-2. Open the chat and click the 3 dots in the top right corner and select `info`
-3. Find the bot in the members list and click it
-4. Click `Add to Group or Channel` and select the chat you want to use
-5. Add the bot as Administrator
-
 ### Install dependencies
 
 - Run the following command to install the dependencies
@@ -60,7 +52,15 @@ npm start
 
 The front end will load at [http://localhost:3000](http://localhost:3000)
 
+### Create a new Telegram chat and add the Bot
+
+1. Create a new telegram chat and add the bot username
+2. Open the chat and click the 3 dots in the top right corner and select `info`
+3. Find the bot in the members list and click it
+4. Click `Add to Group or Channel` and select the chat you want to use
+5. Add the bot as Administrator
+
 ### Use the App
 
-- You need to send the first message from the telegram app. This will set the `CHAT_ID` env variable.
-- You can now send messages from numerous front end clients and from the telegram desktop and mobile applications
+- If this is the first time you have created the chat, then you can send messages from either the client or the telegram app. This is because the `chatId` is set in the `group_chat_created` handler.
+- If the the server restarts and connect to the bot in an existing chat, then the first message will need to be sent from the telegram app. This is because the `chatId` needs to be set in the `message` handler because it wasnt stored when the gourp was created.
