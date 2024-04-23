@@ -19,11 +19,15 @@ const getMessages = () => messages;
 
 let CHAT_ID = "";
 
-const setChatId = (chatId) => {
-  CHAT_ID = chatId;
-};
+// Function to set the chat ID environment variable
+function setChatId(chatId) {
+  process.env.CHAT_ID = chatId.toString();
+}
 
-const getChatId = () => CHAT_ID;
+// Function to retrieve the chat ID environment variable
+function getChatId() {
+  return process.env.CHAT_ID;
+}
 
 module.exports = {
   app,
