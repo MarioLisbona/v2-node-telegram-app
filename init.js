@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 // array of sent messages
-messages = [];
+let messages = [];
 
 // push new message to messages array
 const setMessages = (msg) => {
@@ -17,4 +17,19 @@ const setMessages = (msg) => {
 // retrieve the array of messages
 const getMessages = () => messages;
 
-module.exports = { app, messages, setMessages, getMessages };
+let CHAT_ID = "";
+
+const setChatId = (chatId) => {
+  CHAT_ID = chatId;
+};
+
+const getChatId = () => CHAT_ID;
+
+module.exports = {
+  app,
+  messages,
+  setMessages,
+  getMessages,
+  setChatId,
+  getChatId,
+};
