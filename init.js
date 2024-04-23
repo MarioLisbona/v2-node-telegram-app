@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 
 // array of sent messages
-messages = [];
+let messages = [];
 
 // push new message to messages array
 const setMessages = (msg) => {
@@ -17,4 +17,23 @@ const setMessages = (msg) => {
 // retrieve the array of messages
 const getMessages = () => messages;
 
-module.exports = { app, messages, setMessages, getMessages };
+let CHAT_ID = "";
+
+// Function to set the chat ID environment variable
+function setChatId(chatId) {
+  process.env.CHAT_ID = chatId.toString();
+}
+
+// Function to retrieve the chat ID environment variable
+function getChatId() {
+  return process.env.CHAT_ID;
+}
+
+module.exports = {
+  app,
+  messages,
+  setMessages,
+  getMessages,
+  setChatId,
+  getChatId,
+};
