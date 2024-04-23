@@ -49,45 +49,62 @@ bot.on("message", (msg) => {
 // websocket connection with chat client
 sockserver.on("connection", (ws) => {
   console.log("New client connected!");
-  ws.on("close", () => console.log("Client has disconnected!"));
 
   // msg received from chat client
-  ws.on("message", (data) => {
-    // set variables
+  try {
+    ws.on("message", (data) => {
+      // set variables
 
-    msg = data.toString();
-    chatId = getChatId();
+      msg = data.toString();
+      chatId = getChatId();
 
-    // update message array
-    setMessages(msg);
+      // update message array
+      console.log("gettings messages", getMessages());
 
-    // echo message to telegram bot
-    bot.sendMessage(chatId, msg);
+      setMessages(msg);
+      console.log("setting messages", getMessages());
 
-    // stringify messages array and send to all connected clients
-    const messages = getMessages();
-    const messagesJSON = JSON.stringify(messages);
+      // echo message to telegram bot
+      bot.sendMessage(chatId, msg);
 
-    sockserver.clients.forEach((client) => {
-      console.log("distributing message: ", messages[messages.length - 1]);
-      client.send(messagesJSON);
+      // stringify messages array and send to all connected clients
+      const messages = getMessages();
+      const messagesJSON = JSON.stringify(messages);
+
+      console.log("logging messages array before being sent to clients");
+      console.log("messages", messages);
+      console.log("messagesJSON", messagesJSON);
+
+      sockserver.clients.forEach((client) => {
+        console.log("distributing message: ", messages[messages.length - 1]);
+        client.send(messagesJSON);
+      });
     });
+  } catch (error) {
+    console.error("Error processing message:", error);
+  }
+
+  ws.on("close", () => console.log("Client has disconnected!"));
+
+  ws.on("error", (error) => {
+    console.error("WebSocket error:", error);
   });
-  ws.onerror = function () {
-    console.log("websocket error");
-  };
 
   // bot handler for sent message in telegram application
-  bot.on("message", () => {
-    // stringify messages array and send to all connected clients
-    const messages = getMessages();
-    const messagesJSON = JSON.stringify(messages);
+  try {
+    bot.on("message", () => {
+      // stringify messages array and send to all connected clients
+      const messages = getMessages();
+      const messagesJSON = JSON.stringify(messages);
 
-    sockserver.clients.forEach((client) => {
-      console.log("distributing message: ", messages[messages.length - 1]);
-      client.send(messagesJSON);
+      sockserver.clients.forEach((client) => {
+        console.log("distributing message: ", messages[messages.length - 1]);
+        client.send(messagesJSON);
+      });
     });
-  });
+  } catch (error) {
+    console.error("Error processing bot message:", error);
+  }
 });
 
 console.log("Bot is running...");
