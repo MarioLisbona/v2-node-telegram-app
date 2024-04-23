@@ -37,7 +37,10 @@ bot.on("new_chat_members", (msg) => {
 
 bot.on("message", (msg) => {
   const chatId = msg.chat.id;
+  const chatText = msg.text;
+
   setChatId(chatId);
+  setMessages(chatText);
 });
 
 // websocket connection with chat client
@@ -75,9 +78,6 @@ sockserver.on("connection", (ws) => {
   // bot handler for sent message in telegram application
   bot.on("message", (msg) => {
     console.log("inside webscoket");
-    const chatText = msg.text;
-
-    setMessages(chatText);
 
     // stringify messages array and send to all connected clients
     const messages = getMessages();
