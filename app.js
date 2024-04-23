@@ -1,6 +1,12 @@
 require("dotenv").config();
 const { bot } = require("./botSetup");
-const { app, setChatId, setMessages, getMessages } = require("./init");
+const {
+  app,
+  setChatId,
+  getChatId,
+  setMessages,
+  getMessages,
+} = require("./init");
 const { handleMessage } = require("./lib");
 const indexRoutes = require("./routes/index");
 
@@ -9,6 +15,7 @@ const sockserver = new WebSocketServer({ port: 443 });
 
 // bot handler for sent message in telegram application
 bot.on("message", (msg) => {
+  console.log("Loggin mesg object", msg);
   const chatId = msg.chat.id;
   const text = msg.text;
 
@@ -26,8 +33,10 @@ sockserver.on("connection", (ws) => {
   // msg received from chat client
   ws.on("message", (data) => {
     // set variables
+
     msg = data.toString();
-    chatId = process.env.CHAT_ID;
+    chatId = getChatId();
+    console.log("Message received----", msg, chatId);
 
     // update message array
     setMessages(msg);
@@ -40,7 +49,7 @@ sockserver.on("connection", (ws) => {
     const messagesJSON = JSON.stringify(messages);
 
     sockserver.clients.forEach((client) => {
-      console.log("distributing message: ", messages);
+      console.log("distributing message: ", messages[messages.length - 1]);
       client.send(messagesJSON);
     });
   });
@@ -55,7 +64,7 @@ sockserver.on("connection", (ws) => {
     const messagesJSON = JSON.stringify(messages);
 
     sockserver.clients.forEach((client) => {
-      console.log("distributing message: ", messages);
+      console.log("distributing message: ", messages[messages.length - 1]);
       client.send(messagesJSON);
     });
   });
