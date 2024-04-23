@@ -43,7 +43,10 @@ bot.on("message", (msg) => {
   const chatText = msg.text;
 
   setChatId(chatId);
-  setMessages(chatText);
+
+  if (chatText) {
+    setMessages(chatText);
+  }
 });
 
 // websocket connection with chat client
