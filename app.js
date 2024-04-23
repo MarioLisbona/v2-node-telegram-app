@@ -78,7 +78,7 @@ sockserver.on("connection", (ws) => {
   };
 
   // bot handler for sent message in telegram application
-  bot.on("message", (msg) => {
+  bot.on("message", () => {
     // stringify messages array and send to all connected clients
     const messages = getMessages();
     const messagesJSON = JSON.stringify(messages);
