@@ -13,14 +13,14 @@ const indexRoutes = require("./routes/index");
 const { WebSocketServer } = require("ws");
 const sockserver = new WebSocketServer({ port: 443 });
 
-// bot handler for sent message in telegram application
-bot.on("message", (msg) => {
-  console.log(`Chat id ${msg.chat.id} created`);
+bot.on("group_chat_created", (msg) => {
   const chatId = msg.chat.id;
-  const text = msg.text;
+  const chatTitle = msg.chat.title;
+  length = chatId.length + chatTitle.length;
+
+  console.log(`Chat group: ${chatTitle}(${msg.chat.id}) created`);
 
   setChatId(chatId);
-  setMessages(text);
 });
 
 bot.on("new_chat_members", (msg) => {
