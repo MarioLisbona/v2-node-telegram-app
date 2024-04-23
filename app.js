@@ -1,17 +1,21 @@
 require("dotenv").config();
 const { bot } = require("./botSetup");
-const { app } = require("./init");
+const { app, setChatId, setMessages, getMessages } = require("./init");
 const { handleMessage } = require("./lib");
 const indexRoutes = require("./routes/index");
-const { setMessages, getMessages } = require("./init");
 
 const { WebSocketServer } = require("ws");
 const sockserver = new WebSocketServer({ port: 443 });
 
 // bot handler for sent message in telegram application
-bot.on("message", (telegramMsg) => {
-  // function updates messages array and sets chat ID if not already done
-  handleMessage(telegramMsg);
+bot.on("message", (msg) => {
+  const chatId = msg.chat.id;
+  const text = msg.text;
+
+  setChatId(chatId);
+  setMessages(text);
+
+  bot.sendMessage(chatId, "Welcome to the Crypt Bot Chat - chatId: " + chatId);
 });
 
 // websocket connection with chat client
