@@ -15,14 +15,24 @@ const sockserver = new WebSocketServer({ port: 443 });
 
 // bot handler for sent message in telegram application
 bot.on("message", (msg) => {
-  console.log("Loggin mesg object", msg);
+  console.log(`Chat id ${msg.chat.id} created`);
   const chatId = msg.chat.id;
   const text = msg.text;
 
   setChatId(chatId);
   setMessages(text);
+});
 
-  bot.sendMessage(chatId, "Welcome to the Crypt Bot Chat - chatId: " + chatId);
+bot.on("new_chat_members", (msg) => {
+  firstName = msg.new_chat_member.first_name;
+  lastName = msg.new_chat_member.last_name;
+  chatTitle = msg.chat.title;
+  chatId = getChatId();
+
+  bot.sendMessage(
+    chatId,
+    `Hi ${firstName} ${lastName}! Welcome to the ${chatTitle} Telegram chat group`
+  );
 });
 
 // websocket connection with chat client
