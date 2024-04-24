@@ -1,7 +1,8 @@
 const TelegramBot = require("node-telegram-bot-api");
 require("dotenv").config();
+const { setChatId, getChatId, setMessages } = require("./init");
 
-function setupTelegramBot(setChatId, getChatId, setMessages) {
+function setupTelegramBot() {
   // Replace 'YOUR_BOT_TOKEN' with the token you get from BotFather
   const BOT_TOKEN = process.env.BOT_TOKEN;
 

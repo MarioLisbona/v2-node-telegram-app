@@ -11,7 +11,7 @@ const indexRoutes = require("./routes/index");
 const { createWebSocketServer } = require("./websocket-server");
 const { setupTelegramBot } = require("./telegram-bot");
 
-const bot = setupTelegramBot(setChatId, getChatId, setMessages);
+const bot = setupTelegramBot();
 
 createWebSocketServer(bot, getChatId, setMessages, getMessages);
 
