@@ -1,19 +1,12 @@
 require("dotenv").config();
-// const { bot } = require("./botSetup");
-const {
-  app,
-  setChatId,
-  getChatId,
-  setMessages,
-  getMessages,
-} = require("./init");
+const { app } = require("./init");
 const indexRoutes = require("./routes/index");
 const { createWebSocketServer } = require("./websocket-server");
 const { setupTelegramBot } = require("./telegram-bot");
 
 const bot = setupTelegramBot();
 
-createWebSocketServer(bot, getChatId, setMessages, getMessages);
+createWebSocketServer(bot);
 
 console.log("Bot is running...");
 

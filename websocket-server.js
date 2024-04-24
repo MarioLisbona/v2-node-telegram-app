@@ -1,6 +1,7 @@
 const WebSocket = require("ws");
+const { getChatId, setMessages, getMessages } = require("./init");
 
-function createWebSocketServer(bot, getChatId, setMessages, getMessages) {
+function createWebSocketServer(bot) {
   const sockserver = new WebSocket.Server({
     port: 443,
   });
