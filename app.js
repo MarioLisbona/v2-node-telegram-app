@@ -13,12 +13,7 @@ const { setupTelegramBot } = require("./telegram-bot");
 
 const bot = setupTelegramBot(setChatId, getChatId, setMessages);
 
-const sockserver = createWebSocketServer(
-  bot,
-  getChatId,
-  setMessages,
-  getMessages
-);
+createWebSocketServer(bot, getChatId, setMessages, getMessages);
 
 console.log("Bot is running...");
 
