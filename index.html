@@ -22,14 +22,26 @@
         ws.send(JSON.stringify({ type: "login", username, password }));
       });
 
+      let userObject = {
+        username: username,
+        password: password,
+      };
+
+      // Convert the data object to a query string
+      var queryString = Object.keys(userObject)
+        .map((key) => key + "=" + encodeURIComponent(userObject[key]))
+        .join("&");
+
       // Handle messages from server
       ws.onmessage = (event) => {
         const data = JSON.parse(event.data);
+        console.log(data);
 
         // Handle login success event
         if (data.type === "loginSuccess") {
           alert(data.message);
-          // Redirect to a different page or load content dynamically
+          // Redirect to a different page with the query string appended
+          window.location.href = "websocket-client.html?" + queryString;
         }
         // Handle login failure event
         else if (data.type === "loginFailure") {
