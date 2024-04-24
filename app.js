@@ -1,114 +1,12 @@
 require("dotenv").config();
-const { bot } = require("./botSetup");
-const {
-  app,
-  setChatId,
-  getChatId,
-  setMessages,
-  getMessages,
-} = require("./init");
+const { app } = require("./init");
 const indexRoutes = require("./routes/index");
+const { createWebSocketServer } = require("./websocket-server");
+const { setupTelegramBot } = require("./telegram-bot");
 
-const { WebSocketServer } = require("ws");
-const sockserver = new WebSocketServer({ port: 443 });
+const bot = setupTelegramBot();
 
-// Set the chat ID and log message when group chat is created
-bot.on("group_chat_created", (msg) => {
-  const chatId = msg.chat.id;
-  const chatTitle = msg.chat.title;
-  length = chatId.length + chatTitle.length;
-
-  setChatId(chatId);
-  console.log(`Chat group: ${chatTitle}(${msg.chat.id}) created`);
-});
-
-// send Welcome message when new members are added to the chat
-bot.on("new_chat_members", (msg) => {
-  firstName = msg.new_chat_member.first_name;
-  lastName = msg.new_chat_member.last_name;
-  chatTitle = msg.chat.title;
-  chatId = getChatId();
-
-  bot.sendMessage(
-    chatId,
-    `Hi ${firstName} ${lastName}! Welcome to the ${chatTitle} Telegram chat group`
-  );
-});
-
-// update messages array when telegram groupchat messages are sent
-// set chatID incase group is already created..bit redundant but its necessary because
-// were not storing chatID yet..
-bot.on("message", (msg) => {
-  const chatId = msg.chat.id;
-  const chatText = msg.text;
-
-  setChatId(chatId);
-
-  if (chatText) {
-    setMessages(chatText);
-  }
-});
-
-// websocket connection with chat client
-sockserver.on("connection", (ws) => {
-  console.log("New client connected!");
-
-  // msg received from chat client
-  try {
-    ws.on("message", (data) => {
-      // set variables
-
-      msg = data.toString();
-      chatId = getChatId();
-
-      // update message array
-      console.log("gettings messages", getMessages());
-
-      setMessages(msg);
-      console.log("setting messages", getMessages());
-
-      // echo message to telegram bot
-      bot.sendMessage(chatId, msg);
-
-      // stringify messages array and send to all connected clients
-      const messages = getMessages();
-      const messagesJSON = JSON.stringify(messages);
-
-      console.log("logging messages array before being sent to clients");
-      console.log("messages", messages);
-      console.log("messagesJSON", messagesJSON);
-
-      sockserver.clients.forEach((client) => {
-        console.log("distributing message: ", messages[messages.length - 1]);
-        client.send(messagesJSON);
-      });
-    });
-  } catch (error) {
-    console.error("Error processing message:", error);
-  }
-
-  ws.on("close", () => console.log("Client has disconnected!"));
-
-  ws.on("error", (error) => {
-    console.error("WebSocket error:", error);
-  });
-
-  // bot handler for sent message in telegram application
-  try {
-    bot.on("message", () => {
-      // stringify messages array and send to all connected clients
-      const messages = getMessages();
-      const messagesJSON = JSON.stringify(messages);
-
-      sockserver.clients.forEach((client) => {
-        console.log("distributing message: ", messages[messages.length - 1]);
-        client.send(messagesJSON);
-      });
-    });
-  } catch (error) {
-    console.error("Error processing bot message:", error);
-  }
-});
+createWebSocketServer(bot);
 
 console.log("Bot is running...");
 
