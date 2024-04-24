@@ -112,7 +112,10 @@
         event.preventDefault(); // Prevent form submission
         var inputMessage = document.getElementById("message");
         if (webSocket.readyState === WebSocket.OPEN) {
-          webSocket.send(inputMessage.value);
+          //webSocket.send(inputMessage.value);
+          webSocket.send(
+            JSON.stringify({ type: "client-msg", message: inputMessage.value })
+          );
           inputMessage.value = "";
         } else {
           console.error("WebSocket not open.");
