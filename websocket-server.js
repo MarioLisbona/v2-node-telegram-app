@@ -9,9 +9,18 @@ function createWebSocketServer(bot) {
   sockserver.on("connection", (ws) => {
     console.log("New client connected!");
 
-    ws.on("message", (data) => {
+    ws.on("message", (message) => {
+      const data = JSON.parse(message);
+      console.log("data", data);
+
+      if (data.type === "login") {
+        console.log("Log in attempt");
+      } else if (data.type === "client-msg") {
+        console.log("client sending text");
+      }
+
       try {
-        const msg = data.toString();
+        const msg = data.message;
         const chatId = getChatId();
 
         // Update message array
