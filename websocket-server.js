@@ -15,24 +15,40 @@ function createWebSocketServer(bot) {
 
       if (data.type === "login") {
         console.log("Log in attempt");
+        if (data.username === "example" && data.password === "password") {
+          // If credentials are valid, send success response
+          ws.send(
+            JSON.stringify({
+              type: "loginSuccess",
+              message: "Login successful",
+            })
+          );
+        } else {
+          // If credentials are invalid, send failure response
+          ws.send(
+            JSON.stringify({
+              type: "loginFailure",
+              message: "Invalid username or password",
+            })
+          );
+        }
       } else if (data.type === "client-msg") {
         console.log("client sending text");
-      }
+        try {
+          const msg = data.message;
+          const chatId = getChatId();
 
-      try {
-        const msg = data.message;
-        const chatId = getChatId();
+          // Update message array
+          setMessages(msg);
 
-        // Update message array
-        setMessages(msg);
+          // Send message to Telegram bot
+          bot.sendMessage(chatId, msg);
 
-        // Send message to Telegram bot
-        bot.sendMessage(chatId, msg);
-
-        // Broadcast updated messages to all connected clients
-        broadcastMessages(sockserver, getMessages);
-      } catch (error) {
-        console.error("Error processing message:", error);
+          // Broadcast updated messages to all connected clients
+          broadcastMessages(sockserver, getMessages);
+        } catch (error) {
+          console.error("Error processing message:", error);
+        }
       }
     });
 
