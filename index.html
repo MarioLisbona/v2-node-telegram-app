@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebSocket Example</title>
+  </head>
+  <body>
+    <h1>Login</h1>
+    <input type="text" id="username" placeholder="Username" />
+    <input type="password" id="password" placeholder="Password" />
+    <button id="loginBtn">Login</button>
+
+    <script>
+      const ws = new WebSocket("ws://localhost:443");
+
+      document.getElementById("loginBtn").addEventListener("click", () => {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        // Send login request to server
+        ws.send(JSON.stringify({ type: "login", username, password }));
+      });
+
+      // Handle messages from server
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+
+        // Handle login success event
+        if (data.type === "loginSuccess") {
+          alert(data.message);
+          // Redirect to a different page or load content dynamically
+        }
+        // Handle login failure event
+        else if (data.type === "loginFailure") {
+          alert(data.message);
+          // Optionally, handle the failure (e.g., display an error message)
+        }
+      };
+    </script>
+  </body>
+</html>
