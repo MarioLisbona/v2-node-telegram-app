@@ -6,7 +6,6 @@
   <body>
     <div id="container">
       <h1>Telegram Chat Bot</h1>
-      <!-- New heading added -->
       <div id="chat-box">
         <div id="messages"></div>
       </div>
@@ -44,6 +43,7 @@
       const queryParams = getQueryParams();
       console.log("Query Parameters:", queryParams);
 
+      // receiving a response from the server - telegram bot relay
       webSocket.addEventListener("message", (event) => {
         console.log(event);
 
@@ -51,6 +51,7 @@
         console.log(messages);
         const messagesDiv = document.getElementById("messages");
 
+        // map ove the messages array and populate the chat
         messagesDiv.innerHTML = messages
           .map((message) => `<div> ${message}</div>`)
           .join("");
@@ -59,6 +60,7 @@
         messages.scrollTop = messages.scrollHeight;
       });
 
+      //function to send message back to server
       function sendMessage(event) {
         event.preventDefault(); // Prevent form submission
         var inputMessage = document.getElementById("message");
@@ -78,6 +80,7 @@
         }
       }
 
+      // add listener to send button and send message content
       document
         .getElementById("input-form")
         .addEventListener("submit", sendMessage);
