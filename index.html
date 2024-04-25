@@ -1,54 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WebSocket Example</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 100vh; /* Take up the full height of the viewport */
+        margin: 0; /* Remove default margin */
+        background-color: #f2f2f2; /* Set background color */
+      }
+
+      #container {
+        width: 50%; /* Take up 50% of the viewport width */
+        text-align: center; /* Center text horizontally */
+        background-color: #fff; /* Set background color */
+        padding: 20px; /* Add padding */
+        border-radius: 5px; /* Add border radius */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
+      }
+
+      h1 {
+        margin-bottom: 20px; /* Add some space below the heading */
+      }
+
+      input[type="text"],
+      input[type="password"],
+      input[type="submit"] {
+        padding: 10px; /* Adjust padding */
+        margin: 5px; /* Adjust margin */
+        width: calc(100% - 20px); /* Adjust width */
+        border: 1px solid #ccc; /* Add border */
+        border-radius: 3px; /* Add border radius */
+        font-size: 16px; /* Set font size */
+      }
+
+      input[type="submit"] {
+        background-color: #4caf50; /* Set background color */
+        color: white; /* Set text color */
+        cursor: pointer; /* Set cursor */
+      }
+
+      input[type="submit"]:hover {
+        background-color: #45a049; /* Change background color on hover */
+      }
+    </style>
   </head>
   <body>
-    <h1>Login</h1>
-    <input type="text" id="username" placeholder="Username" />
-    <input type="password" id="password" placeholder="Password" />
-    <button id="loginBtn">Login</button>
+    <div id="container">
+      <h1>Login</h1>
 
-    <script>
-      const ws = new WebSocket("ws://localhost:443");
-
-      document.getElementById("loginBtn").addEventListener("click", () => {
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
-
-        // Send login request to server
-        ws.send(JSON.stringify({ type: "login", username, password }));
-      });
-
-      let userObject = {
-        username: username,
-        password: password,
-      };
-
-      // Convert the data object to a query string
-      var queryString = Object.keys(userObject)
-        .map((key) => key + "=" + encodeURIComponent(userObject[key]))
-        .join("&");
-
-      // Handle messages from server
-      ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        console.log(data);
-
-        // Handle login success event
-        if (data.type === "loginSuccess") {
-          alert(data.message);
-          // Redirect to a different page with the query string appended
-          window.location.href = "websocket-client.html?" + queryString;
-        }
-        // Handle login failure event
-        else if (data.type === "loginFailure") {
-          alert(data.message);
-          // Optionally, handle the failure (e.g., display an error message)
-        }
-      };
-    </script>
+      <form id="login-form">
+        <input type="text" id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Password" />
+        <input type="submit" value="Login" id="loginBtn" />
+      </form>
+    </div>
   </body>
+
+  <script>
+    const ws = new WebSocket("ws://localhost:443");
+
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // Send login request to server
+      ws.send(JSON.stringify({ type: "login", username, password }));
+    });
+
+    let userObject = {
+      username: username,
+      password: password,
+    };
+
+    // Convert the data object to a query string
+    var queryString = Object.keys(userObject)
+      .map((key) => key + "=" + encodeURIComponent(userObject[key]))
+      .join("&");
+
+    // Handle messages from server
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log(data);
+
+      // Handle login success event
+      if (data.type === "loginSuccess") {
+        alert(data.message);
+        // Redirect to a different page with the query string appended
+        window.location.href = "websocket-client.html?" + queryString;
+      }
+      // Handle login failure event
+      else if (data.type === "loginFailure") {
+        alert(data.message);
+        // Optionally, handle the failure (e.g., display an error message)
+      }
+    };
+  </script>
 </html>
