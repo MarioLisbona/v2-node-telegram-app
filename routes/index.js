@@ -2,11 +2,12 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 
-// Express route to serve HTML file
+// index route
 router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../index.html"));
 });
 
+// route to chat client
 router.get("/chat", (req, res) => {
   res.sendFile(path.join(__dirname, "../chat-client.html"));
 });
