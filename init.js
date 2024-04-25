@@ -3,6 +3,9 @@ const express = require("express");
 // Creating an instance of Express
 const app = express();
 
+// Serve static files from the 'public' directory
+app.use(express.static("public"));
+
 // Middleware to parse JSON bodies
 app.use(express.json());
 

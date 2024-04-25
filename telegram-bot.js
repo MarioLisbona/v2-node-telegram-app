@@ -39,11 +39,12 @@ function setupTelegramBot() {
   bot.on("message", (msg) => {
     const chatId = msg.chat.id;
     const chatText = msg.text;
+    username = msg.from.first_name + " " + msg.from.last_name;
 
     setChatId(chatId);
 
     if (chatText) {
-      setMessages(chatText);
+      setMessages(`(${username}) - ${chatText}`);
     }
   });
 

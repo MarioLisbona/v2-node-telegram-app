@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="./client.css" />
+  </head>
+  <body>
+    <div id="container">
+      <h1>Telegram Chat Bot</h1>
+      <div id="chat-box">
+        <div id="messages"></div>
+      </div>
+
+      <form id="input-form">
+        <input
+          type="text"
+          id="message"
+          name="message"
+          placeholder="Enter Message..."
+        />
+        <input type="submit" value="Send" />
+      </form>
+    </div>
+
+    <script>
+      const webSocket = new WebSocket("ws://localhost:443/");
+
+      webSocket.addEventListener("open", () => {
+        console.log("We are connected");
+      });
+
+      // Function to parse query string parameters
+      function getQueryParams() {
+        const queryString = window.location.search.substring(1);
+        const params = {};
+        queryString.split("&").forEach((pair) => {
+          const [key, value] = pair.split("=");
+          params[key] = decodeURIComponent(value);
+        });
+        return params;
+      }
+
+      // Get query parameters
+      const queryParams = getQueryParams();
+      console.log("Query Parameters:", queryParams);
+
+      // receiving a response from the server - telegram bot relay
+      webSocket.addEventListener("message", (event) => {
+        console.log(event);
+
+        const messages = JSON.parse(event.data);
+        console.log(messages);
+        const messagesDiv = document.getElementById("messages");
+
+        // map ove the messages array and populate the chat
+        messagesDiv.innerHTML = messages
+          .map((message) => `<div> ${message}</div>`)
+          .join("");
+
+        // Scroll to the bottom of the chat box
+        messages.scrollTop = messages.scrollHeight;
+      });
+
+      //function to send message back to server
+      function sendMessage(event) {
+        event.preventDefault(); // Prevent form submission
+        var inputMessage = document.getElementById("message");
+        clientMessage = `(${queryParams.username}) - ${inputMessage.value}`;
+
+        if (webSocket.readyState === WebSocket.OPEN) {
+          //webSocket.send(inputMessage.value);
+          webSocket.send(
+            JSON.stringify({
+              type: "client-msg",
+              message: clientMessage,
+            })
+          );
+          inputMessage.value = "";
+        } else {
+          console.error("WebSocket not open.");
+        }
+      }
+
+      // add listener to send button and send message content
+      document
+        .getElementById("input-form")
+        .addEventListener("submit", sendMessage);
+    </script>
+  </body>
+</html>

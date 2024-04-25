@@ -4,8 +4,10 @@ const indexRoutes = require("./routes/index");
 const { createWebSocketServer } = require("./websocket-server");
 const { setupTelegramBot } = require("./telegram-bot");
 
+// create bot instance
 const bot = setupTelegramBot();
 
+// create a websocket server connection
 createWebSocketServer(bot);
 
 console.log("Bot is running...");
