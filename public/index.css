@@ -1,0 +1,42 @@
+body {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh; /* Take up the full height of the viewport */
+  margin: 0; /* Remove default margin */
+  background-color: #f2f2f2; /* Set background color */
+}
+
+#container {
+  width: 50%; /* Take up 50% of the viewport width */
+  text-align: center; /* Center text horizontally */
+  background-color: #fff; /* Set background color */
+  padding: 20px; /* Add padding */
+  border-radius: 5px; /* Add border radius */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
+}
+
+h1 {
+  margin-bottom: 20px; /* Add some space below the heading */
+}
+
+input[type="text"],
+input[type="password"],
+input[type="submit"] {
+  padding: 10px; /* Adjust padding */
+  margin: 5px; /* Adjust margin */
+  width: calc(100% - 20px); /* Adjust width */
+  border: 1px solid #ccc; /* Add border */
+  border-radius: 3px; /* Add border radius */
+  font-size: 16px; /* Set font size */
+}
+
+input[type="submit"] {
+  background-color: #4caf50; /* Set background color */
+  color: white; /* Set text color */
+  cursor: pointer; /* Set cursor */
+}
+
+input[type="submit"]:hover {
+  background-color: #45a049; /* Change background color on hover */
+}
