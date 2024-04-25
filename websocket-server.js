@@ -9,10 +9,12 @@ function createWebSocketServer(bot) {
   sockserver.on("connection", (ws) => {
     console.log("New client connected!");
 
+    // websocket is receiving a message from the client
     ws.on("message", (message) => {
       const data = JSON.parse(message);
       console.log("data", data);
 
+      // websocket is receiving login attempt from the chat client
       if (data.type === "login") {
         console.log("Log in attempt");
         if (
@@ -35,6 +37,7 @@ function createWebSocketServer(bot) {
             })
           );
         }
+        // websocket is receiving a text message from the chat client
       } else if (data.type === "client-msg") {
         console.log("client sending text");
         try {
@@ -54,11 +57,12 @@ function createWebSocketServer(bot) {
         }
       }
     });
-
+    // websocket connection is closed
     ws.on("close", () => {
       console.log("Client has disconnected!");
     });
 
+    // websocket connection expereinces an error
     ws.on("error", (error) => {
       console.error("WebSocket error:", error);
     });
