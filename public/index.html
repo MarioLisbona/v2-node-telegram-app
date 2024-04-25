@@ -61,39 +61,42 @@
   <script>
     const ws = new WebSocket("ws://localhost:443");
 
+    let userObject = {};
+    let queryString = "";
+
     document.getElementById("loginBtn").addEventListener("click", () => {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
 
+      let userObject = {
+        username: username,
+        password: password,
+      };
+
+      // Convert the data object to a query string
+      var queryString = Object.keys(userObject)
+        .map((key) => key + "=" + encodeURIComponent(userObject[key]))
+        .join("&");
+
       // Send login request to server
       ws.send(JSON.stringify({ type: "login", username, password }));
+
+      // Handle messages from server
+      ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        console.log(data);
+
+        // Handle login success event
+        if (data.type === "loginSuccess") {
+          // Redirect to a different page with the query string appended
+          window.location.href = "chat-client.html?" + queryString;
+        }
+        // Handle login failure event
+        else if (data.type === "loginFailure") {
+          alert(data.message);
+          // Optionally, handle the failure (e.g., display an error message)
+        }
+      };
     });
-
-    let userObject = {
-      username: username,
-      password: password,
-    };
-
-    // Convert the data object to a query string
-    var queryString = Object.keys(userObject)
-      .map((key) => key + "=" + encodeURIComponent(userObject[key]))
-      .join("&");
-
-    // Handle messages from server
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log(data);
-
-      // Handle login success event
-      if (data.type === "loginSuccess") {
-        // Redirect to a different page with the query string appended
-        window.location.href = "chat-client.html?" + queryString;
-      }
-      // Handle login failure event
-      else if (data.type === "loginFailure") {
-        alert(data.message);
-        // Optionally, handle the failure (e.g., display an error message)
-      }
-    };
   </script>
 </html>
