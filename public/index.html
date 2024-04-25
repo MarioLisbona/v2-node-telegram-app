@@ -86,9 +86,8 @@
 
       // Handle login success event
       if (data.type === "loginSuccess") {
-        alert(data.message);
         // Redirect to a different page with the query string appended
-        window.location.href = "websocket-client.html?" + queryString;
+        window.location.href = "chat-client.html?" + queryString;
       }
       // Handle login failure event
       else if (data.type === "loginFailure") {

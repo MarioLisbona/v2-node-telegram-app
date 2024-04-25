@@ -7,4 +7,8 @@ router.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../index.html"));
 });
 
+router.get("/chat", (req, res) => {
+  res.sendFile(path.join(__dirname, "../chat-client.html"));
+});
+
 module.exports = router;
