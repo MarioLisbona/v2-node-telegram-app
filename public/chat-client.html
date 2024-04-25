@@ -116,7 +116,7 @@
         const messagesDiv = document.getElementById("messages");
 
         messagesDiv.innerHTML = messages
-          .map((message) => `<div> - ${message}</div>`)
+          .map((message) => `<div> ${message}</div>`)
           .join("");
 
         // Scroll to the bottom of the chat box
@@ -126,10 +126,15 @@
       function sendMessage(event) {
         event.preventDefault(); // Prevent form submission
         var inputMessage = document.getElementById("message");
+        clientMessage = `(${queryParams.username}) - ${inputMessage.value}`;
+
         if (webSocket.readyState === WebSocket.OPEN) {
           //webSocket.send(inputMessage.value);
           webSocket.send(
-            JSON.stringify({ type: "client-msg", message: inputMessage.value })
+            JSON.stringify({
+              type: "client-msg",
+              message: clientMessage,
+            })
           );
           inputMessage.value = "";
         } else {

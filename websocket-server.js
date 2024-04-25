@@ -13,12 +13,12 @@ function createWebSocketServer(bot) {
       const data = JSON.parse(message);
       console.log("data", data);
 
-      const username = data.username;
-      console.log("start - username", username);
-
       if (data.type === "login") {
         console.log("Log in attempt");
-        if (data.username === "admin" && data.password === "123") {
+        if (
+          (data.username === "admin" && data.password === "123") ||
+          (data.username === "mario" && data.password === "123")
+        ) {
           // If credentials are valid, send success response
           ws.send(
             JSON.stringify({
@@ -37,9 +37,8 @@ function createWebSocketServer(bot) {
         }
       } else if (data.type === "client-msg") {
         console.log("client sending text");
-        console.log("start - username", username);
         try {
-          let msg = `(${username})${data.message}`;
+          const msg = data.message;
           const chatId = getChatId();
 
           // Update message array
