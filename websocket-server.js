@@ -17,7 +17,7 @@ function createWebSocketServer(bot) {
         console.log("Log in attempt");
         if (
           (data.username === "admin" && data.password === "123") ||
-          (data.username === "mario" && data.password === "123")
+          (data.username === "chatUser123" && data.password === "123")
         ) {
           // If credentials are valid, send success response
           ws.send(
